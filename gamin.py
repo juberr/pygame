@@ -1,5 +1,5 @@
 import sys, pygame
-from game_objs import Player
+from game_objs import Line
 
 pygame.init()
 
@@ -14,39 +14,37 @@ img = pygame.image.load('intro_ball.gif')
 
 screen = pygame.display.set_mode(size)
 
-black = (255,255,255)
-
+white = (255,255,255)
+black = (0,0,0)
 start = [100, 200]
 
 end = [150,200]
 
-pressed_butt = False
-
-
-
 
 while 1:
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+   line = Line(screen,white,start,end, 50)
 
-        if event.type == pygame.KEYDOWN:
-           pressed_butt = True
+   for event in pygame.event.get():
+      if event.type == pygame.QUIT: sys.exit()
 
-        if event.type == pygame.KEYUP:
-           pressed_butt = False
-            
+   # Handling input
+   if pygame.key.get_pressed()[pygame.K_d]:
+      line.move(5)
+      
 
-        if pressed_butt:
-            end[0] += 5
-
-    j = pygame.draw.line(screen, black, start, end, 25)
+   if pygame.key.get_pressed()[pygame.K_a]:
+      line.move(-5)   
 
 
     
 
 
-    #screen.fill(black)
-    #screen.blit(j)
-    pygame.display.update()
-    main_clock.tick(framerate)
+    
+
+
+   
+   #screen.blit()
+   pygame.display.update()
+   screen.fill(black)
+   main_clock.tick(framerate)
