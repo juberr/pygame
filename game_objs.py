@@ -11,6 +11,11 @@ class Line:
         self.line = pygame.draw.line(self.screen, self.colour, self.start, self.end, self.width)
 
 
-    def move(self, vel):
+    def horiz_move(self, vel):
+
+        # add or remove distance to end of line
         self.end[0] += vel
-        self.line = pygame.draw.line(self.screen, self.colour, self.start, self.end, self.width)
+
+        # if line has no length arbitrarily add one to end, removes visual bug
+        if self.end == self.start:
+            self.end[0] += 1
