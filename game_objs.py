@@ -2,20 +2,25 @@ import pygame
 
 class Line:
 
-    def __init__(self, screen, colour, start, end, width):
-        self.start = start
-        self.end = end
-        self.colour = colour
+    def __init__(self, screen, width):
+        self.start = pygame.mouse.get_pos()
+        self.colour = [250, 250, 250]
         self.screen = screen
         self.width = width
-        self.line = pygame.draw.line(self.screen, self.colour, self.start, self.end, self.width)
+        self.cursor = None
+
+    def begin(self):
+        pygame.draw.circle(self.screen, self.colour, self.start, self.width)
 
 
-    def horiz_move(self, vel):
+    def draw(self):
 
-        # add or remove distance to end of line
-        self.end[0] += vel
+        curr_mouse_pos = pygame.mouse.get_pos()
 
-        # if line has no length arbitrarily add one to end, removes visual bug
-        if self.end == self.start:
-            self.end[0] += 1
+        pygame.draw.line(self.screen, self.colour, self.start, curr_mouse_pos, self.width)
+        pygame.draw.circle(self.screen, self.colour, curr_mouse_pos, self.width/2)
+        
+
+        
+
+

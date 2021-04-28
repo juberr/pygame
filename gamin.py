@@ -12,38 +12,35 @@ size = width, height = 1920, 1080
 speed = [2, 2]
 black = 0, 0, 0
 screen = pygame.display.set_mode(size)
+white = (250, 250, 250)
 
+# global drawing variable, remove later
 
-# initialize line attributes
-white = (255,255,255)
-black = (0,0,0)
-start = [100, 200]
-end = [150,200]
-
+drawing = False
 
 while 1:
-
-   line = Line(screen,white,start,end, 50)
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT: sys.exit()
 
    # Handling input
 
-   keys = pygame.key.get_pressed()
+   mouse = pygame.mouse.get_pressed(num_buttons = 3)
+   
+   if mouse[0] == 1:
+      if not drawing:
+         line = Line(screen, 25)
+         drawing = True
 
-   if keys[pygame.K_d]:
-      line.horiz_move(5)
-      print(line.end, line.start)
+   if mouse[2] == 1:
+      drawing = False
+
+   if drawing:
+      line.begin()
+      line.draw()
+
+   
       
-
-   if keys[pygame.K_a]:
-      line.horiz_move(-5)
-      print(line.end, line.start)   
-
-
-    
-
    #screen.blit()
    pygame.display.update()
    screen.fill(black)
