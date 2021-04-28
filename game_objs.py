@@ -7,18 +7,18 @@ class Line:
         self.colour = [250, 250, 250]
         self.screen = screen
         self.width = width
-        self.cursor = None
-
-    def begin(self):
-        pygame.draw.circle(self.screen, self.colour, self.start, self.width)
-
+        self.cursor = pygame.image.load('cursor.png')
+        self.cursor = pygame.transform.scale(self.cursor, (60, 60))
 
     def draw(self):
 
-        curr_mouse_pos = pygame.mouse.get_pos()
+        curr_pos = [i-30 for i in list(pygame.mouse.get_pos())]
 
-        pygame.draw.line(self.screen, self.colour, self.start, curr_mouse_pos, self.width)
-        pygame.draw.circle(self.screen, self.colour, curr_mouse_pos, self.width/2)
+        self.screen.blit(self.cursor, curr_pos)
+        
+
+
+
         
 
         

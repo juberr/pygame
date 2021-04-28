@@ -16,6 +16,7 @@ white = (250, 250, 250)
 
 # global drawing variable, remove later
 
+
 drawing = False
 
 while 1:
@@ -36,12 +37,11 @@ while 1:
       drawing = False
 
    if drawing:
-      line.begin()
+      #line.begin()
       line.draw()
 
    
       
-   #screen.blit()
    pygame.display.update()
-   screen.fill(black)
+   #screen.fill(black)
    main_clock.tick(framerate)
