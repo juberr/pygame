@@ -1,11 +1,11 @@
 import sys, pygame
-from game_objs import Line
+from game_objs import *
 
 pygame.init()
 
 # game logic parameters
 main_clock = pygame.time.Clock()
-framerate = 60
+framerate = 144
 
 # screen size
 size = width, height = 1920, 1080
@@ -18,7 +18,7 @@ white = (250, 250, 250)
 
 
 drawing = False
-
+balls = []
 while 1:
 
    for event in pygame.event.get():
@@ -30,8 +30,13 @@ while 1:
    
    if mouse[0] == 1:
       if not drawing:
-         line = Line(screen, 25)
+         line = Cursor(screen, 20)
          drawing = True
+      
+      if drawing:
+         ball = Ball(screen)
+         ball.spawn()
+         balls.append(ball)
 
    if mouse[2] == 1:
       drawing = False
@@ -40,8 +45,9 @@ while 1:
       #line.begin()
       line.draw()
 
+   for ball in balls:
+      ball.update()
    
-      
    pygame.display.update()
-   #screen.fill(black)
+   screen.fill(black)
    main_clock.tick(framerate)
