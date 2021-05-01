@@ -14,13 +14,15 @@ black = 0, 0, 0
 screen = pygame.display.set_mode(size)
 white = (250, 250, 250)
 
-# global drawing variable, remove later
-
+# global drawing variable, remove later. Constants courtesy of https://github.com/000Nobody/Orbit-Simulator/blob/master/main.py
+GRAV = 6.67408 * (10 ** -11)
+MASS_RATIO = 2 * (10 ** 9)
 
 # create game class later to abstract these
 drawing = False
 player_objs = []
 game_objs = []
+id = 0
 
 while 1:
 
@@ -28,17 +30,24 @@ while 1:
 
       if event.type == pygame.QUIT: sys.exit()
    
+
+      # handle mouse input
       if event.type == pygame.MOUSEBUTTONDOWN:
 
+         # enter ball mode
          if pygame.mouse.get_pressed()[0] == 1 and not drawing:
             blip = Cursor(screen, 50)
             player_objs.append(blip)
             drawing = True
+            continue
 
+         # spawn ball on mouse click
          if pygame.mouse.get_pressed()[0] == 1 and drawing:
-            ball = Ball(screen)
-            game_objs.append(ball)
+            planet = Planet(screen, id)
+            id += 1
+            game_objs.append(planet)
             
+         # exit ball mode   
          if pygame.mouse.get_pressed()[2] == 1 and drawing:
             player_objs.pop()
             drawing = False
@@ -48,11 +57,7 @@ while 1:
       
             
 
-   # Handling input
-
-  
    
-
    for obj in game_objs:
       obj.update()
    
