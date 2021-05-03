@@ -1,6 +1,6 @@
 import pygame
 import math
-
+import random
 class Cursor:
 
     def __init__(self, screen, width):
@@ -25,11 +25,10 @@ class Planet:
         self.last_pos = None
         self.pos = list(pygame.mouse.get_pos())
         self.GRAV = GRAV
-        self.vel = [0,0]
-        self.MASS_RATIO = 2 * (10 ** 7)
+        self.vel = [random.uniform(0,0.05),random.uniform(0,0.05)]
+        self.DENSITY = 2 * (10 ** 4)
         self.radius = 1
         self.growing = True
-        self.planet = pygame.draw.circle(self.screen, (255,255,255), self.pos, self.radius)
         self.id = id
 
     def grow(self):
@@ -39,10 +38,10 @@ class Planet:
             self.growing = False
 
     def get_volume(self):
-        return 4/3 * math.pi * (self.radius ** 3)
+        return (4/3) * math.pi * (self.radius ** 3)
 
     def get_mass(self):
-        return self.get_volume() * self.MASS_RATIO
+        return self.get_volume() * self.DENSITY
 
     def get_gravs(self, planets):
         if not self.growing:
@@ -52,15 +51,18 @@ class Planet:
                     # calculate x and y total distance
                     dx = (planet.pos[0] - self.pos[0])
                     dy = (planet.pos[1] - self.pos[1])
+
                     distance = math.sqrt(dx**2 + dy**2)
 
                     angle = math.atan2(dy, dx)
 
                     # calculate gravitational force
-                    f = self.GRAV * planet.get_mass() * self.get_mass() / (distance ** 2)
+        
+                    F = self.GRAV * planet.get_mass() * self.get_mass() / (distance ** 2)
                     
-                    self.vel[0] = (math.cos(angle) * f) / self.get_mass()
-                    self.vel[1] = (math.sin(angle) * f) / self.get_mass()
+                    self.vel[0] += (math.cos(angle) * F) / self.get_mass()
+                    self.vel[1] += (math.sin(angle) * F) / self.get_mass()
+
 
 
 
@@ -76,8 +78,10 @@ class Planet:
 
         self.get_gravs(planets)
         self.update_pos()
-
-        pygame.draw.circle(self.screen, (255,255,255), self.pos, self.radius)
+        #print(self.vel, self.pos)
+        pygame.draw.circle(self.screen, (255,255,255), self.pos, self.radius / 2)
+        if self.id == 1:
+            print(self.pos)
         
 
 
