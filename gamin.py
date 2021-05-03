@@ -5,7 +5,7 @@ pygame.init()
 
 # game logic parameters
 main_clock = pygame.time.Clock()
-framerate = 144
+framerate = 60
 
 # screen size
 size = width, height = 1920, 1080
@@ -43,7 +43,7 @@ while 1:
 
          # spawn ball on mouse click
          if pygame.mouse.get_pressed()[0] == 1 and drawing:
-            planet = Planet(screen, id)
+            planet = Planet(screen, id, GRAV)
             id += 1
             game_objs.append(planet)
             
@@ -55,11 +55,8 @@ while 1:
 
 
       
-            
-
-   
    for obj in game_objs:
-      obj.update()
+      obj.update(planets=game_objs)
    
    for obj in player_objs:
       obj.update()   
