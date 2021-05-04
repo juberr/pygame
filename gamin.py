@@ -5,8 +5,7 @@ pygame.init()
 
 # game logic parameters
 main_clock = pygame.time.Clock()
-framerate = 1200
-
+framerate = 500
 # screen size
 size = width, height = 2560, 1400
 speed = [2, 2]
@@ -16,7 +15,7 @@ white = (250, 250, 250)
 
 # global drawing variable, remove later. Constants courtesy of https://github.com/000Nobody/Orbit-Simulator/blob/master/main.py
 GRAV = 6.67408 * (10 ** -11)
-MASS_RATIO = 2 * (10 ** 5)
+MASS_RATIO = 1000
 
 # create game class later to abstract these
 drawing = False

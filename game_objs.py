@@ -24,45 +24,46 @@ class Planet:
         self.screen = screen
         self.last_pos = None
         self.pos = list(pygame.mouse.get_pos())
-        self.GRAV = GRAV
-        self.vel = [random.uniform(0,0.05),random.uniform(0,0.05)]
-        self.DENSITY = 2 * (10 ** 4)
+        self.GRAV = 1
+        self.DENSITY = 1
         self.radius = 1
         self.growing = True
         self.id = id
+        self.vel = [0,0] if self.id == 0 else  [random.uniform(0,0.10),random.uniform(0,0.10)]
 
     def grow(self):
         if pygame.mouse.get_pressed()[0] == 1 and self.growing:
             self.radius += 0.5
         else:
             self.growing = False
+            print(self.radius)
 
     def get_volume(self):
-        return (4/3) * math.pi * (self.radius ** 3)
+        return (4/3) * math.pi * ((self.radius) ** 3)
 
     def get_mass(self):
         return self.get_volume() * self.DENSITY
 
-    def get_gravs(self, planets):
+    def set_vels(self, planets):
         if not self.growing:
             for planet in planets:
                 if planet.id != self.id and not planet.growing:
-
+                    dt = 0.00001
+                    #r_hat = self.pos
                     # calculate x and y total distance
-                    dx = (planet.pos[0] - self.pos[0])
-                    dy = (planet.pos[1] - self.pos[1])
-
-                    distance = math.sqrt(dx**2 + dy**2)
-
-                    angle = math.atan2(dy, dx)
-
+                    r = tuple(map(lambda i, j: i -j, planet.pos, self.pos))
+                    distance = math.sqrt(r[0]**2 + r[1]**2)
                     # calculate gravitational force
-        
-                    F = self.GRAV * planet.get_mass() * self.get_mass() / (distance ** 2)
-                    
-                    self.vel[0] += (math.cos(angle) * F) / self.get_mass()
-                    self.vel[1] += (math.sin(angle) * F) / self.get_mass()
+                    G = self.GRAV * ((planet.get_mass() * self.get_mass()) / (distance ** 2)) 
 
+                    # get rs
+                    r_mag = math.sqrt(r[0]**2 + r[1]**2)
+                    r_hat = tuple([i/r_mag for i in r])
+
+                    r_hat_x = ((self.GRAV * (self.get_mass()/r_mag**2)) * r_hat[0]) * dt
+                    r_hat_y = ((self.GRAV * (self.get_mass()/r_mag**2)) * r_hat[1]) * dt
+                    planet.vel[0] -= r_hat_x
+                    planet.vel[1] -= r_hat_y
 
 
 
@@ -76,10 +77,10 @@ class Planet:
         if self.growing:
             self.grow()
 
-        self.get_gravs(planets)
+        self.set_vels(planets)
         self.update_pos()
         #print(self.vel, self.pos)
-        pygame.draw.circle(self.screen, (255,255,255), self.pos, self.radius / 2)
+        pygame.draw.circle(self.screen, (255,255,255), self.pos, self.radius)
         if self.id == 1:
             print(self.pos)
         
